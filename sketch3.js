@@ -9,7 +9,6 @@ let png = 0
 //let kb;
 //let wall;
 
-
 let players = []
 let catCount = 0
 let Cats = []
@@ -18,14 +17,18 @@ let fallingCat;
 let gameStarted = false;
 //let ceiling = 0;
 
+let catGray = ["cat0_hold.PNG", "cat0_fall.PNG", "cat0_sleep.PNG"]
+let catHallie = ["cat1_hold.png", "cat1_fall.png", "cat1_sleep.png"]
+let catThomas = ["cat2_hold.png", "cat2_fall.png", "cat2_sleep.png"]
+let catOreo = ["cat3_hold.png", "cat3_fall.png", "cat3_sleep.png"]
+
+let catMore = [catGray, catHallie, catThomas, catOreo]
 
 //let fileName = "cat" + whichCat + "_fall.png"
 //let fileNameBetter = `cat${whichCat}_fall.png`
 
-
 function preload() {
   img = loadImage('sprites/cat_PNG.png');
-
 }
 
 function setup() {
@@ -36,12 +39,20 @@ function setup() {
   Cats.push(new Sprite());
 
   currentCat = Cats[catCount]
-  currentCat.img = 'sprites/cat0_hold.PNG'
+  
+  for(let i = 0; i < catMore.length; i++){
+    let randomIndex = floor(random(catMore.length))
+    console.log(randomIndex);
+    
+    }
+currentCat.img = 
+
   //currentCat.width = 10;
   //currentCat.height = 10;
   currentCat.collider = 'none'
   //currentCat = 'k'
   //png = new Sprite();
+
 
   //player = new Sprite();
   currentCat.x = img.width * .1
