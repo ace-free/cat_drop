@@ -5,6 +5,7 @@ let speed = 5
 let floor;
 let png = 0
 
+let sprYarsh = 0
 let players = []
 let catCount = 0
 let Cats = []
@@ -15,6 +16,7 @@ let holdimage
 let fallimage
 let sleepimage
 let loadingimage, Greypath, Halliepath, Thomaspath, Oreopath
+let sleepholder
 
 let catGray = ['sprites/cat0_hold.PNG', 'sprites/cat0_fall.PNG', 'sprites/cat0_sleep.PNG']
 let catGrayLoadedImages = []
@@ -152,13 +154,15 @@ function draw() {
   }
 }
 
+
 function catSleep() {
   ///////// THIS IS MAKING CAT GO EEBIES SLEEB AT THE BOTTOM ./////
-  fallingCat.img = sleepimage
+sleepholder=sleepimage
+  fallingCat.img = sleepholder
   fallingCat.width = 125;
   fallingCat.height = 70;
 }
-
+ 
 function loadCat() {
   ///////// THIS IS MAKING THE CAT REAPPEAR AT THE TOP FOOL ////
   Cats.push(new Sprite())
