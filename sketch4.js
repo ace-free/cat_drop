@@ -4,10 +4,6 @@ let speed = 5
 //let sprite = 0;
 let floor;
 let png = 0
-//let player;
-//let testAni;
-//let kb;
-//let wall;
 
 let players = []
 let catCount = 0
@@ -15,51 +11,66 @@ let Cats = []
 let currentCat;
 let fallingCat;
 let gameStarted = false;
-//let ceiling = 0;
+let holdimage
+let fallimage
+let sleepimage
+let loadingimage, Greypath, Halliepath, Thomaspath, Oreopath
 
-let catGray = ["cat0_hold.PNG", "cat0_fall.PNG", "cat0_sleep.PNG"]
-let catHallie = ["cat1_hold.png", "cat1_fall.png", "cat1_sleep.png"]
-let catThomas = ["cat2_hold.png", "cat2_fall.png", "cat2_sleep.png"]
-let catOreo = ["cat3_hold.png", "cat3_fall.png", "cat3_sleep.png"]
+let catGray = ['sprites/cat0_hold.PNG', 'sprites/cat0_fall.PNG', 'sprites/cat0_sleep.PNG']
+let catGrayLoadedImages = []
+let catHallie = ['sprites/cat1_hold.png', 'sprites/cat1_fall.png', 'sprites/cat1_sleep.png']
+let catHallieLoadedImages = []
+let catThomas = ['sprites/cat2_hold.png', 'sprites/cat2_fall.png', 'sprites/cat2_sleep.png']
+let catThomasLoadedImages = []
+let catOreo = ['sprites/cat3_hold.png', 'sprites/cat3_fall.png', 'sprites/cat3_sleep.png']
+let catOreoLoadedImages = []
+
 
 let catMore = [catGray, catHallie, catThomas, catOreo]
+let catMoreLoadedImages = [catGrayLoadedImages, catHallieLoadedImages, catThomasLoadedImages, catOreoLoadedImages]
 
 //let fileName = "cat" + whichCat + "_fall.png"
 //let fileNameBetter = `cat${whichCat}_fall.png`
 
 function preload() {
   img = loadImage('sprites/cat_PNG.png');
+  for (let i = 1; i < 3; i++) {
+    Greypath = catGray[i]
+    Halliepath = catHallie[i]
+    Thomaspath = catThomas[i]
+    Oreopath = catOreo[i]
+    //loadingimage=loadImage(path)
+    catGrayLoadedImages.push(loadImage(Greypath))
+    catHallieLoadedImages.push(loadImage(Halliepath))
+    catThomasLoadedImages.push(loadImage(Thomaspath))
+    catOreoLoadedImages.push(loadImage(Oreopath))
+  }
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   world.gravity.y = 10;
+  currentName = catGrayLoadedImages
+  holdimage = currentName[0]
+  fallimage = currentName[1]
+  sleepimage = currentName[2]
+
+  currentName = random(catMore)
   
-  // wall = new Sprite(0, 165.5, 10, 500, 's')
   Cats.push(new Sprite());
+  holdimage = currentName[0]
+  fallimage = currentName[1]
+  sleepimage = currentName[2]
 
   currentCat = Cats[catCount]
-  
-  //for(let i = 0; i < catMore.length; i++){
-    //let randomIndex = floor(random(catMore.length))
-   // console.log(randomIndex);
-    //}
-currentCat.img = "sprites/cat0_hold.PNG"
+
+  currentCat.img = holdimage
 
   //currentCat.width = 10;
   //currentCat.height = 10;
   currentCat.collider = 'none'
-  //currentCat = 'k'
-  //png = new Sprite();
-
-
-  //player = new Sprite();
   currentCat.x = img.width * .1
   currentCat.y = img.height * .076
-  //player.img = 'sprites/cat_PNG.png'
-  //player.diameter = 7;d
-  // player.scale = .1;
-
 
   floor = new Sprite();
   floor.y = height;
@@ -69,24 +80,19 @@ currentCat.img = "sprites/cat0_hold.PNG"
 
 }
 
-
 function draw() {
   background(171, 165, 144);
   // let currentCat = Cats[catCount]
-  //player.speed = 3
+ 
   currentCat.speed = 5
   currentCat.debug = mouse.pressing();
 
-  // drop!!!!!!
+  holdimage = currentName[0]
+  fallimage = currentName[1]
+  sleepimage = currentName[2]
 
-  ///testAni.nextFrame()
-
-
-  //move with arrow keys
+  //////move with arrow keys////////
   //ellipse(x, y, 50, 50); //////ellipse is here dont lose it you freak
-  //ceiling = new SliderJoint(wall, currentCat)
-  //ceiling.range = windowWidth;
-  //ceiling.angle = 0;
 
   if (kb.pressing('left')) currentCat.vel.x = -5;
   else if (kb.pressing('right')) currentCat.vel.x = 5;
@@ -94,47 +100,43 @@ function draw() {
   if (kb.presses('space')) currentCat.vel.y = 8;
   else currentCat.sleeping = 0;
 
-  //if (player.vel.y = 'static'){
-  //}
-
 
   if (kb.presses('space')) {
     gameStarted = true;
+
+    currentName = random(catMore)
+
     fallingCat = currentCat;
     fallingCat.collider = 'dynamic'
     fallingCat.vel.y = 2;
-    fallingCat.img = 'sprites/cat0_fall.pnG'
+    fallingCat.img = fallimage
     fallingCat.width = 125;
     fallingCat.height = 70;
 
     loadCat();
-
   }
 
   currentCat.bounciness = 0.5
   currentCat.friction = 4
   currentCat.rotationLock = false
-
-
+  currentCat.debug = mouse.pressing();
 
   if (gameStarted) {
-
-
-
     if (fallingCat.collided(floor)) {
       fallingCat.collider = 'd '
-
-      //loadCat();
       catSleep();
 
     }
-
     // how make it affected by cats and not just floor collision,,, the poor kitty keeps floating off into space ;-;
 
+    
 
-    currentCat.debug = mouse.pressing();
 
-    for (let i = 0; i < Cats.length-1; i++) {
+
+
+
+
+    for (let i = 0; i < Cats.length - 1; i++) {
       let tempCat = Cats[i]
       // tempCat.sleeping = false
       tempCat.debug = mouse.pressing();
@@ -146,29 +148,28 @@ function draw() {
         catSleep();
 
       }
-
     }
   }
-
 }
 
 function catSleep() {
   ///////// THIS IS MAKING CAT GO EEBIES SLEEB AT THE BOTTOM ./////
-  fallingCat.img = 'sprites/cat0_sleep.PNG'
+  fallingCat.img = sleepimage
   fallingCat.width = 125;
   fallingCat.height = 70;
 }
-
 
 function loadCat() {
   ///////// THIS IS MAKING THE CAT REAPPEAR AT THE TOP FOOL ////
   Cats.push(new Sprite())
   catCount++
   currentCat = Cats[catCount] //this doesnt currently load a sprite where its supposed to load,, its in the center not the top corner
-  currentCat.img = 'sprites/cat0_hold.PNG'
+  currentCat.img = holdimage
   //currentCat.width = 1
   //currentCat.height = 10
   //currentCat.x = img.width * .1
   currentCat.collider = 'none'
   currentCat.y = img.height * .076
+
+
 }
